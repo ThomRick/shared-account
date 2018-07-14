@@ -6,4 +6,5 @@ export interface ISharedAccountModel {
   readonly description: string;
   readonly users: IUserModel[];
   readonly operations: IOperationModel[];
+  readonly amount: number;
 }

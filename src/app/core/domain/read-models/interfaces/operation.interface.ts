@@ -1,3 +1,3 @@
 export interface IOperationModel {
-  readonly type: string;
+  readonly amount: number;
 }
