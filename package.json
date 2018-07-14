@@ -1,0 +1,20 @@
+{
+  "name": "event-sourcing-cqrs",
+  "version": "0.0.0",
+  "description": "Event sourcing and CQRS implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --config jestconfig.json",
+    "test:dev": "npm test -s -- --watchAll"
+  },
+  "author": "ThomRick",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^23.1.6",
+    "@types/node": "^10.5.2",
+    "jest": "^23.4.1",
+    "ts-jest": "^23.0.0",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2"
+  }
+}
