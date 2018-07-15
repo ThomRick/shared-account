@@ -1,4 +1,4 @@
-import { IDocument } from '../interfaces/document.interface';
+import { IDocument } from '../interfaces';
 import { IEventBase } from '../../events';
 
 export class Document implements IDocument {
