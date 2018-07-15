@@ -1,6 +1,6 @@
 import { IEventBase } from '../../events';
 
-export interface IDocument {
+export interface IDocumentBase {
   _id: string;
   events: IEventBase[];
 }

@@ -1,6 +1,6 @@
 import { IEventBase } from '../../events';
 
 export interface IRepositoryBase {
-  insert(): Promise<boolean>;
-  find(): Promise<IEventBase[]>;
+  insert(key: string, events: IEventBase[]): Promise<boolean>;
+  find(query: (entity: any) => boolean): Promise<IEventBase[]>;
 }
