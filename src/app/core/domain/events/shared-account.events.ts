@@ -12,6 +12,7 @@ export interface ISharedAccountEventBase extends IEventBase {
 }
 
 export interface ISharedAccountCreatedEvent extends ISharedAccountEventBase {
+  description: string;
   owner: string;
   type: SharedAccountEventType.CREATED;
 }
