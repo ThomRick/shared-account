@@ -1,1 +1,1 @@
-export * from './command-handler-base.interface';
+export * from './command-handler.interface';
