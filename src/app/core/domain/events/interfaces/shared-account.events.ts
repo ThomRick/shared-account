@@ -1,4 +1,4 @@
-import { IEventBase } from '../../../../framework/events';
+import { IEventBase } from '../../../../../framework/events';
 
 export enum SharedAccountEventType {
   CREATED = 'SHARED_ACCOUNT_CREATED',

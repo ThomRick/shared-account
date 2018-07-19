@@ -1,8 +1,8 @@
 import { AbstractAggregate } from '../../../../../framework/aggregates';
 import { IEventBase } from '../../../../../framework/events';
-import { ISharedAccountModel } from '../../read-models';
+import { ISharedAccountModel, SharedAccountModelImpl } from '../../read-models';
 import { ISharedAccountAggregate } from '../interfaces';
-import { SharedAccountEvent, SharedAccountEventType } from '../../events';
+import { SharedAccountEvent, SharedAccountEventType, SharedAccountCreated } from '../../events';
 import { generateID } from '../../../../../framework/generators';
 
 export class SharedAccountAggregateImpl extends AbstractAggregate implements ISharedAccountAggregate {
@@ -10,12 +10,7 @@ export class SharedAccountAggregateImpl extends AbstractAggregate implements ISh
   protected _model: ISharedAccountModel;
 
   public create(description: string, owner: string): ISharedAccountAggregate {
-    const event: SharedAccountEvent = {
-      type: SharedAccountEventType.CREATED,
-      accountID: generateID(),
-      owner,
-      description,
-    };
+    const event: SharedAccountEvent = new SharedAccountCreated(generateID(), owner, description);
     this.apply(event);
     this.save(event);
     return this;
@@ -37,12 +32,7 @@ export class SharedAccountAggregateImpl extends AbstractAggregate implements ISh
     switch (event.type) {
       case SharedAccountEventType.CREATED:
         this._id = event.accountID;
-        this._model = {
-          accountID: event.accountID,
-          amount: 0,
-          description: event.description,
-          owner: event.owner,
-        };
+        this._model = new SharedAccountModelImpl(event.accountID, event.owner, event.description);
         break;
       default:
         throw new Error(`Can no manage event : ${ event.type }`);

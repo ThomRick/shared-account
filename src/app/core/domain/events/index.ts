@@ -1,1 +1,2 @@
-export * from './shared-account.events';
+export * from './interfaces';
+export * from './impl';
