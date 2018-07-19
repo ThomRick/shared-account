@@ -29,4 +29,22 @@ describe('InMemoryRepository', () => {
       new DocumentImpl(key, [ createEvent('TEST_CREATED'), createEvent('TEST_PASSED') ]),
     );
   });
+
+  it('should execute the process for each document repository when find without a key', async () => {
+    collection.set('documentA', new DocumentImpl('documentA', [ createEvent('DOCUMENT_CREATED') ]));
+    collection.set('documentB', new DocumentImpl('documentB', [ createEvent('DOCUMENT_CREATED') ]));
+    collection.set('documentC', new DocumentImpl('documentC', [ createEvent('DOCUMENT_CREATED') ]));
+    const process = jest.fn();
+    await repository.find(process);
+    expect(process).toHaveBeenCalledTimes(3);
+  });
+
+  it('should execute the process for the specified key document events when find with a key', async () => {
+    collection.set('documentA', new DocumentImpl('documentA', [ createEvent('DOCUMENT_CREATED') ]));
+    collection.set('documentB', new DocumentImpl('documentB', [ createEvent('DOCUMENT_CREATED') ]));
+    collection.set('documentC', new DocumentImpl('documentC', [ createEvent('DOCUMENT_CREATED') ]));
+    const process = jest.fn();
+    await repository.find('documentA', process);
+    expect(process).toHaveBeenCalledTimes(1);
+  });
 });

@@ -2,6 +2,8 @@ import { IRepositoryBase, IDocumentBase } from '../interfaces';
 import { IEventBase } from '../../events';
 import { DocumentImpl } from './document';
 
+const noop = () => {};
+
 export class InMemoryRepository implements IRepositoryBase {
   constructor(
     private readonly collection: Map<string, IDocumentBase> = new Map<string, IDocumentBase>(),
@@ -15,7 +17,23 @@ export class InMemoryRepository implements IRepositoryBase {
     this.collection.set(key, document);
   }
 
-  public async find(): Promise<void> {
-    throw new Error('Method not implemented.');
+  public async find(key: string, process: (events: IEventBase[]) => void): Promise<void>;
+  public async find(process: (events: IEventBase[]) => void): Promise<void>;
+  public async find(arg1: any, arg2?: any) {
+    let key: string;
+    let process: (events: IEventBase[]) => void = noop;
+    if (!!arg1 && !!arg2) {
+      key = arg1;
+      process = arg2;
+    } else {
+      process = arg1;
+    }
+    if (!!key) {
+      process(this.collection.get(key).events);
+    } else {
+      this.collection.forEach(
+        (document: IDocumentBase) => process(document.events),
+      );
+    }
   }
 }
