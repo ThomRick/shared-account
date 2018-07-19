@@ -4,48 +4,29 @@ import { IEventBase } from '../../events';
 import { DocumentImpl } from './document';
 
 describe('InMemoryRepository', () => {
-  it('can be created', () => {
-    const collection = new Map<string, IDocumentBase>();
-    const repository: IRepositoryBase = new InMemoryRepository(collection);
+  let collection: Map<string, IDocumentBase>;
+  let repository: IRepositoryBase;
+
+  beforeEach(() => {
+    collection = new Map<string, IDocumentBase>();
+    repository = new InMemoryRepository(collection);
   });
 
+  const createEvent = (type: string): IEventBase => ({ type });
+
   it('should have a new document with events when insert', async () => {
-    const collection = new Map<string, IDocumentBase>();
-    const repository: IRepositoryBase = new InMemoryRepository(collection);
-    const events: IEventBase[] = [
-      {
-        type: 'TEST_CREATED',
-      },
-    ];
-    await repository.insert('id', events);
-    expect(collection.get('id')).toEqual(new DocumentImpl('id', events));
+    const key: string = 'id';
+    const events: IEventBase[] = [ createEvent('TEST_CREATED') ];
+    await repository.insert(key, events);
+    expect(collection.get(key)).toEqual(new DocumentImpl(key, events));
   });
 
   it('should insert new events to an existing document when insert on existing document', async () => {
     const key: string = 'id';
-    const collection = new Map<string, IDocumentBase>();
-    const events: IEventBase[] = [
-      {
-        type: 'TEST_CREATED',
-      },
-    ];
-    collection.set(key, new DocumentImpl(key, events));
-    const repository: IRepositoryBase = new InMemoryRepository(collection);
-    const newEvents: IEventBase[] = [
-      {
-        type: 'TEST_PASSED',
-      },
-    ];
-    await repository.insert('id', newEvents);
-    expect(collection.get('id')).toEqual(
-      new DocumentImpl('id', [
-        {
-          type: 'TEST_CREATED',
-        },
-        {
-          type: 'TEST_PASSED',
-        },
-      ]),
+    collection.set(key, new DocumentImpl(key, [ createEvent('TEST_CREATED') ]));
+    await repository.insert(key, [ createEvent('TEST_PASSED') ]);
+    expect(collection.get(key)).toEqual(
+      new DocumentImpl(key, [ createEvent('TEST_CREATED'), createEvent('TEST_PASSED') ]),
     );
   });
 });
