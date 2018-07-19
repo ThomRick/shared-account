@@ -1,5 +1,5 @@
 import { SharedAccountAggregateImpl } from './shared-account.aggregate';
-import { SharedAccountCreated, SharedAccountUserAdded, SharedAccountExpendAdded } from '../../events';
+import { SharedAccountCreated, SharedAccountUserAdded, SharedAccountExpendAdded, SharedAccountClosed } from '../../events';
 import { SharedAccountModelImpl, IExpend } from '../../read-models';
 
 describe('Shared Account Aggregate', () => {
@@ -43,5 +43,17 @@ describe('Shared Account Aggregate', () => {
     expect(aggregate.uncommittedChanges).toContainEqual(
       new SharedAccountExpendAdded(aggregate.id, expend),
     );
+  });
+
+  it('should have a SharedAccountClosed event when close the shared accound', () => {
+    const description: string = 'description';
+    const owner: string = 'owner';
+    const aggregate = new SharedAccountAggregateImpl();
+    aggregate.create(description, owner);
+    aggregate.close('reason');
+    expect(aggregate.uncommittedChanges).toContainEqual(
+      new SharedAccountClosed(aggregate.id, 'reason'),
+    );
+    expect(aggregate.model).toEqual(null);
   });
 });
