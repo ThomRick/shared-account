@@ -1,1 +1,1 @@
-export * from './shared-account';
+export * from './shared-account.interface';
