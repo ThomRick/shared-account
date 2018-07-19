@@ -1,8 +1,8 @@
 import { AbstractAggregate } from '../../../../../framework/aggregates';
 import { IEventBase } from '../../../../../framework/events';
-import { ISharedAccountModel, SharedAccountModelImpl } from '../../read-models';
+import { ISharedAccountModel, SharedAccountModelImpl, IExpend } from '../../read-models';
 import { ISharedAccountAggregate } from '../interfaces';
-import { SharedAccountEvent, SharedAccountEventType, SharedAccountCreated, SharedAccountUserAdded } from '../../events';
+import { SharedAccountEvent, SharedAccountEventType, SharedAccountCreated, SharedAccountUserAdded, SharedAccountExpendAdded } from '../../events';
 import { generateID } from '../../../../../framework/generators';
 
 export class SharedAccountAggregateImpl extends AbstractAggregate implements ISharedAccountAggregate {
@@ -23,8 +23,11 @@ export class SharedAccountAggregateImpl extends AbstractAggregate implements ISh
     return this;
   }
 
-  public addExpend(amount: number): ISharedAccountAggregate {
-    throw new Error('Method not implemented.');
+  public addExpend(expend: IExpend): ISharedAccountAggregate {
+    const event: SharedAccountEvent = new SharedAccountExpendAdded(this._id, expend);
+    this.apply(event);
+    this.save(event);
+    return this;
   }
 
   public close(reason: string): ISharedAccountAggregate {
@@ -39,6 +42,9 @@ export class SharedAccountAggregateImpl extends AbstractAggregate implements ISh
         break;
       case SharedAccountEventType.USER_ADDED:
         this._model.addUser(event.userID);
+        break;
+      case SharedAccountEventType.EXPEND_ADDED:
+        this.model.addExpend(event.expend);
         break;
       default:
         throw new Error(`Can no manage event : ${ event.type }`);

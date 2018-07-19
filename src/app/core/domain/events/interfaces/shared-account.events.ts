@@ -1,10 +1,11 @@
 import { IEventBase } from '../../../../../framework/events';
+import { IExpend } from '../../read-models';
 
 export enum SharedAccountEventType {
   CREATED = 'SHARED_ACCOUNT_CREATED',
   CLOSED = 'SHARED_ACCOUNT_CLOSED',
   USER_ADDED = 'SHARED_ACCOUNT_USER_ADDED',
-  EXPEND_MADE = 'SHARED_ACCOUNT_EXPEND_MADE',
+  EXPEND_ADDED = 'SHARED_ACCOUNT_EXPEND_ADDED',
 }
 
 export interface ISharedAccountEventBase extends IEventBase {
@@ -22,11 +23,9 @@ export interface ISharedAccountUserAddedEvent extends ISharedAccountEventBase {
   type: SharedAccountEventType.USER_ADDED;
 }
 
-export interface ISharedAccountExpendMadeEvent extends ISharedAccountEventBase {
-  userID: string;
-  involvedUsers: string[];
-  amount: number;
-  type: SharedAccountEventType.EXPEND_MADE;
+export interface ISharedAccountExpendAddedEvent extends ISharedAccountEventBase {
+  expend: IExpend;
+  type: SharedAccountEventType.EXPEND_ADDED;
 }
 
 export interface ISharedAccountClosedEvent extends ISharedAccountEventBase {
@@ -37,4 +36,5 @@ export interface ISharedAccountClosedEvent extends ISharedAccountEventBase {
 export type SharedAccountEvent =
   | ISharedAccountCreatedEvent
   | ISharedAccountUserAddedEvent
+  | ISharedAccountExpendAddedEvent
   | ISharedAccountClosedEvent;
