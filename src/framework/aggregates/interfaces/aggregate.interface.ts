@@ -1,6 +1,6 @@
 import { IEventBase } from '../../events';
 
-export interface IAggregateBase {
+export interface IAggregate {
   readonly uncommittedChanges: IEventBase[];
-  rebuild(events: IEventBase[]): IAggregateBase;
+  rebuild(events: IEventBase[]): IAggregate;
 }

@@ -1,8 +1,8 @@
-import { IAggregateBase } from '../interfaces';
+import { IAggregate } from '../interfaces';
 import { IEventBase } from '../../events';
 import { IReadModel } from '../../read-model/interfaces/read-model-base.interface';
 
-export abstract class AbstractAggregate implements IAggregateBase {
+export abstract class AbstractAggregate implements IAggregate {
   protected abstract _id: string;
   protected abstract _model: IReadModel;
 
@@ -12,16 +12,16 @@ export abstract class AbstractAggregate implements IAggregateBase {
     this.uncommittedChanges = [];
   }
 
-  protected abstract apply(event: IEventBase): IAggregateBase;
+  protected abstract apply(event: IEventBase): IAggregate;
 
-  public rebuild(events: IEventBase[]): IAggregateBase {
-    return events.reduce<IAggregateBase>(
-      (aggregate: IAggregateBase, event: IEventBase) => (aggregate as AbstractAggregate).apply(event),
+  public rebuild(events: IEventBase[]): IAggregate {
+    return events.reduce<IAggregate>(
+      (aggregate: IAggregate, event: IEventBase) => (aggregate as AbstractAggregate).apply(event),
       this.empty(),
     );
   }
 
-  protected abstract empty(): IAggregateBase;
+  protected abstract empty(): IAggregate;
 
   protected save(event: IEventBase): void {
     this.uncommittedChanges.push(event);

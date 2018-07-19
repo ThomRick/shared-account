@@ -1,1 +1,1 @@
-export * from './aggregate-base.interface';
+export * from './aggregate.interface';
