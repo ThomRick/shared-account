@@ -1,14 +1,23 @@
-import { IRepositoryBase, IDocumentBase } from '../interfaces';
+import { IRepository, IDocument } from '../interfaces';
 import { InMemoryRepository } from './in-memory.repository';
 import { IEventBase } from '../../events';
 import { DocumentImpl } from './document';
+import { IAggregate } from '../../aggregates';
+
+class TestAggregate implements IAggregate {
+  public readonly uncommittedChanges: IEventBase[];
+  public rebuild(events: IEventBase[]): IAggregate {
+    throw new Error('Method not implemented.');
+  }
+  public map(): any {}
+}
 
 describe('InMemoryRepository', () => {
-  let collection: Map<string, IDocumentBase>;
-  let repository: IRepositoryBase;
+  let collection: Map<string, IDocument>;
+  let repository: IRepository<TestAggregate>;
 
   beforeEach(() => {
-    collection = new Map<string, IDocumentBase>();
+    collection = new Map<string, IDocument>();
     repository = new InMemoryRepository(collection);
   });
 

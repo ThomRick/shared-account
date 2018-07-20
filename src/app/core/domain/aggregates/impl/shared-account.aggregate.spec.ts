@@ -1,4 +1,4 @@
-import { SharedAccountAggregateImpl } from './shared-account.aggregate';
+import { SharedAccountAggregate } from './shared-account.aggregate';
 import { SharedAccountCreated, SharedAccountUserAdded, SharedAccountExpendAdded, SharedAccountClosed } from '../../events';
 import { Expend } from '../models';
 
@@ -6,7 +6,7 @@ describe('Shared Account Aggregate', () => {
   it('should have a SharedAccountCreated event when create a new SharedAccount', () => {
     const description: string = 'description';
     const owner: string = 'owner';
-    const aggregate = new SharedAccountAggregateImpl();
+    const aggregate = new SharedAccountAggregate();
     aggregate.create(description, owner);
     expect(aggregate.id).toBeDefined();
     expect(aggregate.owner).toEqual(owner);
@@ -21,7 +21,7 @@ describe('Shared Account Aggregate', () => {
   it('should have a SharedAccountUserAdded event when add a new user', () => {
     const description: string = 'description';
     const owner: string = 'owner';
-    const aggregate = new SharedAccountAggregateImpl();
+    const aggregate = new SharedAccountAggregate();
     aggregate.create(description, owner);
     const newUser = 'newUser';
     aggregate.addUser(newUser);
@@ -34,7 +34,7 @@ describe('Shared Account Aggregate', () => {
   it('should have a SharedAccountExpendAdded event when add a new expend', () => {
     const description: string = 'description';
     const owner: string = 'owner';
-    const aggregate = new SharedAccountAggregateImpl();
+    const aggregate = new SharedAccountAggregate();
     aggregate.create(description, owner);
     const newUser = 'newUser';
     aggregate.addUser(newUser);
@@ -53,7 +53,7 @@ describe('Shared Account Aggregate', () => {
   it('should have a SharedAccountClosed event when close the shared accound', () => {
     const description: string = 'description';
     const owner: string = 'owner';
-    const aggregate = new SharedAccountAggregateImpl();
+    const aggregate = new SharedAccountAggregate();
     aggregate.create(description, owner);
     aggregate.close('reason');
     expect(aggregate.uncommittedChanges).toContainEqual(
@@ -64,9 +64,9 @@ describe('Shared Account Aggregate', () => {
   it('should transform the aggregate into a read-model when map', () => {
     const description: string = 'description';
     const owner: string = 'owner';
-    const aggregate = new SharedAccountAggregateImpl();
+    const aggregate = new SharedAccountAggregate();
     aggregate.create(description, owner);
-    const model = aggregate.map((account: SharedAccountAggregateImpl) => ({
+    const model = aggregate.map((account: SharedAccountAggregate) => ({
       id: account.id,
     }));
     expect(model).toEqual({

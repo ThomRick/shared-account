@@ -12,7 +12,7 @@ import {
 import { generateID } from '../../../../../framework/generators';
 import { Expend } from '../models';
 
-export class SharedAccountAggregateImpl extends AbstractAggregate implements ISharedAccountAggregate {
+export class SharedAccountAggregate extends AbstractAggregate implements ISharedAccountAggregate {
   protected _id: string;
   private _owner: string;
   private _description: string;
@@ -47,7 +47,7 @@ export class SharedAccountAggregateImpl extends AbstractAggregate implements ISh
     return this;
   }
 
-  protected apply(event: IEventBase): SharedAccountAggregateImpl {
+  protected apply(event: IEventBase): SharedAccountAggregate {
     switch (event.type) {
       case SharedAccountEventType.CREATED:
         this._id = event.accountID;
@@ -70,8 +70,8 @@ export class SharedAccountAggregateImpl extends AbstractAggregate implements ISh
     return this;
   }
 
-  protected empty(): SharedAccountAggregateImpl {
-    return new SharedAccountAggregateImpl();
+  protected empty(): SharedAccountAggregate {
+    return new SharedAccountAggregate();
   }
 
   public get owner(): string {

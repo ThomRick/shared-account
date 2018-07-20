@@ -1,5 +1,5 @@
 import { IEventBase } from '../../../../../framework/events';
-import { IExpend } from '../../read-models';
+import { Expend } from '../../aggregates/models';
 
 export enum SharedAccountEventType {
   CREATED = 'SHARED_ACCOUNT_CREATED',
@@ -24,7 +24,7 @@ export interface ISharedAccountUserAddedEvent extends ISharedAccountEventBase {
 }
 
 export interface ISharedAccountExpendAddedEvent extends ISharedAccountEventBase {
-  expend: IExpend;
+  expend: Expend;
   type: SharedAccountEventType.EXPEND_ADDED;
 }
 

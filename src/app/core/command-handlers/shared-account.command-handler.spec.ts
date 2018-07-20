@@ -2,15 +2,22 @@ import { ICommandHandler } from '../../../framework/command-handlers';
 import { SharedAccountCommand, SharedAccountCommandName } from '../domain/commands';
 import { SharedAccountCommandHandler } from './shared-account.command-handler';
 import { IRepository, InMemoryRepository } from '../../../framework/infrastructure';
-
-jest.mock('../../../framework/infrastructure/impl/in-memory.repository');
+import { IDocument } from '../../../framework/infrastructure/interfaces';
+import { SharedAccountEventType } from '../domain/events';
+import { SharedAccountAggregate } from '../domain/aggregates/impl';
 
 describe('Shared Account Command Handler', () => {
-  let repository: IRepository;
+  let collection: Map<string, IDocument>;
+  let repository: IRepository<SharedAccountAggregate>;
   let handler: ICommandHandler<SharedAccountCommand>;
 
+  let insertSpy;
+  let findSpy;
   beforeEach(() => {
-    repository = new InMemoryRepository();
+    collection = new Map<string, IDocument>();
+    repository = new InMemoryRepository(collection);
+    insertSpy = spyOn(repository, 'insert').and.callThrough();
+    findSpy = spyOn(repository, 'find').and.callThrough();
     handler = new SharedAccountCommandHandler(repository);
   });
 
@@ -23,10 +30,22 @@ describe('Shared Account Command Handler', () => {
       },
     };
     await handler.handle(command);
-    expect(repository.insert).toHaveBeenCalled();
+    expect(insertSpy).toHaveBeenCalled();
   });
 
-  xit('should handle add user command', async () => {
+  it('should handle add user command', async () => {
+    collection.set('id', {
+      _id: 'id',
+      events: [
+        {
+          type: SharedAccountEventType.CREATED,
+          accountID: 'id',
+          description: 'description',
+          owner: 'owner',
+        },
+      ],
+      add: () => {},
+    });
     const command: SharedAccountCommand = {
       name: SharedAccountCommandName.ADD_USER,
       payload: {
@@ -35,7 +54,7 @@ describe('Shared Account Command Handler', () => {
       },
     };
     await handler.handle(command);
-    expect(repository.find).toHaveBeenCalled();
-    expect(repository.insert).toHaveBeenCalled();
+    expect(findSpy).toHaveBeenCalled();
+    expect(insertSpy).toHaveBeenCalled();
   });
 });
