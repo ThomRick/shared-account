@@ -1,6 +1,7 @@
 import { SharedAccountAggregateImpl } from './shared-account.aggregate';
 import { SharedAccountCreated, SharedAccountUserAdded, SharedAccountExpendAdded, SharedAccountClosed } from '../../events';
 import { SharedAccountModelImpl, IExpend } from '../../read-models';
+import { AbstractAggregate } from '../../../../../framework/aggregates';
 
 describe('Shared Account Aggregate', () => {
   it('should have a SharedAccountCreated event when create a new SharedAccount', () => {
@@ -55,5 +56,18 @@ describe('Shared Account Aggregate', () => {
       new SharedAccountClosed(aggregate.id, 'reason'),
     );
     expect(aggregate.model).toEqual(null);
+  });
+
+  it('should transform the aggregate into a read-model when map', () => {
+    const description: string = 'description';
+    const owner: string = 'owner';
+    const aggregate = new SharedAccountAggregateImpl();
+    aggregate.create(description, owner);
+    const model = aggregate.map((agg: AbstractAggregate) => ({
+      id: agg.id,
+    }));
+    expect(model).toEqual({
+      id: aggregate.id,
+    });
   });
 });

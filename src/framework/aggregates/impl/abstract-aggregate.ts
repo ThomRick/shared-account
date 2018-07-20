@@ -12,7 +12,9 @@ export abstract class AbstractAggregate implements IAggregate {
     this.uncommittedChanges = [];
   }
 
-  protected abstract apply(event: IEventBase): IAggregate;
+  public map<T extends IReadModel>(actor: (aggregate: IAggregate) => T): T {
+    return actor(this);
+  }
 
   public rebuild(events: IEventBase[]): IAggregate {
     return events.reduce<IAggregate>(
@@ -21,6 +23,7 @@ export abstract class AbstractAggregate implements IAggregate {
     );
   }
 
+  protected abstract apply(event: IEventBase): IAggregate;
   protected abstract empty(): IAggregate;
 
   protected save(event: IEventBase): void {
