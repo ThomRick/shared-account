@@ -1,6 +1,5 @@
 import { IRepository, IDocument } from '../interfaces';
 import { IEventBase } from '../../events';
-import { DocumentImpl } from './document';
 import { IAggregate } from '../../aggregates';
 
 const noop = () => null;
@@ -11,9 +10,9 @@ export class InMemoryRepository<T extends IAggregate> implements IRepository<T> 
   ) {}
 
   public async insert(key: string, events: IEventBase[]): Promise<void> {
-    const document: IDocument = this.collection.get(key) || new DocumentImpl(key);
+    const document: IDocument = this.collection.get(key) || { _id: key, events: [] };
     events.forEach(
-      (event: IEventBase) => document.add(event),
+      (event: IEventBase) => document.events.push(event),
     );
     this.collection.set(key, document);
   }

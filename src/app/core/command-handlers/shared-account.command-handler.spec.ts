@@ -44,13 +44,45 @@ describe('Shared Account Command Handler', () => {
           owner: 'owner',
         },
       ],
-      add: () => {},
     });
     const command: SharedAccountCommand = {
       name: SharedAccountCommandName.ADD_USER,
       payload: {
         accountID: 'id',
         userID: 'userID',
+      },
+    };
+    await handler.handle(command);
+    expect(findSpy).toHaveBeenCalled();
+    expect(insertSpy).toHaveBeenCalled();
+  });
+
+  it('should handle add expend command', async () => {
+    collection.set('id', {
+      _id: 'id',
+      events: [
+        {
+          type: SharedAccountEventType.CREATED,
+          accountID: 'id',
+          description: 'description',
+          owner: 'owner',
+        },
+        {
+          type: SharedAccountEventType.USER_ADDED,
+          accountID: 'id',
+          userID: 'userID',
+        },
+      ],
+    });
+    const command: SharedAccountCommand = {
+      name: SharedAccountCommandName.ADD_EXPEND,
+      payload: {
+        accountID: 'id',
+        expend: {
+          owner: 'userID',
+          involvedUsers: [ 'owner', 'userID' ],
+          amount: 100,
+        },
       },
     };
     await handler.handle(command);

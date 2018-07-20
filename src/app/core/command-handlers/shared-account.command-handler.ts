@@ -1,7 +1,13 @@
 import { ICommandHandler } from '../../../framework/command-handlers';
 import { IRepository } from '../../../framework/infrastructure';
 import { InMemoryRepository } from '../../../framework/infrastructure';
-import { SharedAccountCommand, SharedAccountCommandName, ICreateCommandPayload, IAddUserCommandPayload } from '../domain/commands';
+import {
+  SharedAccountCommand,
+  SharedAccountCommandName,
+  ICreateCommandPayload,
+  IAddUserCommandPayload,
+  IAddExpendCommandPayload,
+} from '../domain/commands';
 import { SharedAccountAggregate } from '../domain/aggregates/impl';
 import { IEventBase } from 'framework/events';
 
@@ -18,8 +24,11 @@ export class SharedAccountCommandHandler implements ICommandHandler<SharedAccoun
       case SharedAccountCommandName.ADD_USER:
         await this.handleAddUserCommand(command.payload);
         break;
+      case SharedAccountCommandName.ADD_EXPEND:
+        await this.handleAddExpendCommand(command.payload);
+        break;
       default:
-        throw new Error(`Can no handle command : ${ command.name}`);
+        throw new Error(`Can not handle command : ${ command.name}`);
     }
   }
 
@@ -35,6 +44,15 @@ export class SharedAccountCommandHandler implements ICommandHandler<SharedAccoun
       (events: IEventBase[]): SharedAccountAggregate => this.rebuildProcess(events),
     ) as SharedAccountAggregate;
     aggregate.addUser(payload.userID);
+    await this.repository.insert(aggregate.id, aggregate.uncommittedChanges);
+  }
+
+  private async handleAddExpendCommand(payload: IAddExpendCommandPayload): Promise<void> {
+    const aggregate: SharedAccountAggregate = await this.repository.find(
+      payload.accountID,
+      (events: IEventBase[]) => this.rebuildProcess(events),
+    ) as SharedAccountAggregate;
+    aggregate.addExpend(payload.expend);
     await this.repository.insert(aggregate.id, aggregate.uncommittedChanges);
   }
 
