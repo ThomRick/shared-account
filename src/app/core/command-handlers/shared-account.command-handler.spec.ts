@@ -1,9 +1,8 @@
 import { ICommandHandler } from '../../../framework/command-handlers';
-import { SharedAccountCommand, SharedAccountCommandName } from '../domain/commands';
+import { SharedAccountCommand } from '../domain/commands';
 import { SharedAccountCommandHandler } from './shared-account.command-handler';
 import { IRepository, InMemoryRepository } from '../../../framework/infrastructure';
 import { IDocument } from '../../../framework/infrastructure/interfaces';
-import { SharedAccountEventType } from '../domain/events';
 import { SharedAccountAggregate } from '../domain/aggregates/impl';
 
 describe('Shared Account Command Handler', () => {
@@ -23,7 +22,7 @@ describe('Shared Account Command Handler', () => {
 
   it('should handle create command', async () => {
     const command: SharedAccountCommand = {
-      name: SharedAccountCommandName.CREATE,
+      name: 'CREATE_SHARED_ACCOUNT',
       payload: {
         owner: 'owner',
         description: 'description',
@@ -38,7 +37,7 @@ describe('Shared Account Command Handler', () => {
       _id: 'id',
       events: [
         {
-          type: SharedAccountEventType.CREATED,
+          type: 'SHARED_ACCOUNT_CREATED',
           accountID: 'id',
           description: 'description',
           owner: 'owner',
@@ -46,7 +45,7 @@ describe('Shared Account Command Handler', () => {
       ],
     });
     const command: SharedAccountCommand = {
-      name: SharedAccountCommandName.ADD_USER,
+      name: 'ADD_SHARED_ACCOUNT_USER',
       payload: {
         accountID: 'id',
         userID: 'userID',
@@ -62,20 +61,20 @@ describe('Shared Account Command Handler', () => {
       _id: 'id',
       events: [
         {
-          type: SharedAccountEventType.CREATED,
+          type: 'SHARED_ACCOUNT_CREATED',
           accountID: 'id',
           description: 'description',
           owner: 'owner',
         },
         {
-          type: SharedAccountEventType.USER_ADDED,
+          type: 'SHARED_ACCOUNT_USER_ADDED',
           accountID: 'id',
           userID: 'userID',
         },
       ],
     });
     const command: SharedAccountCommand = {
-      name: SharedAccountCommandName.ADD_EXPEND,
+      name: 'ADD_SHARED_ACCOUNT_EXPEND',
       payload: {
         accountID: 'id',
         expend: {

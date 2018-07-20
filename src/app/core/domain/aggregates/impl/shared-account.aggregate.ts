@@ -3,7 +3,6 @@ import { IEventBase } from '../../../../../framework/events';
 import { ISharedAccountAggregate } from '../interfaces';
 import {
   SharedAccountEvent,
-  SharedAccountEventType,
   SharedAccountCreated,
   SharedAccountUserAdded,
   SharedAccountExpendAdded,
@@ -49,20 +48,20 @@ export class SharedAccountAggregate extends AbstractAggregate implements IShared
 
   protected apply(event: IEventBase): SharedAccountAggregate {
     switch (event.type) {
-      case SharedAccountEventType.CREATED:
+      case 'SHARED_ACCOUNT_CREATED':
         this._id = event.accountID;
         this._owner = event.owner;
         this._description = event.description;
         this._users = [ event.owner ];
         this._expends = [];
         break;
-      case SharedAccountEventType.USER_ADDED:
+      case 'SHARED_ACCOUNT_USER_ADDED':
         this._users.push(event.userID);
         break;
-      case SharedAccountEventType.EXPEND_ADDED:
+      case 'SHARED_ACCOUNT_EXPEND_ADDED':
         this._expends.push(event.expend);
         break;
-      case SharedAccountEventType.CLOSED:
+      case 'SHARED_ACCOUNT_CLOSED':
         break;
       default:
         throw new Error(`Can no manage event : ${ event.type }`);

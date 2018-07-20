@@ -1,13 +1,6 @@
 import { ICommand } from 'framework/commands';
 import { Expend } from '../aggregates/models';
 
-export enum SharedAccountCommandName {
-  CREATE = 'CREATE_SHARED_ACCOUNT',
-  ADD_USER = 'ADD_SHARED_ACCOUNT_USER',
-  ADD_EXPEND = 'ADD_SHARED_ACCOUNT_EXPEND',
-  CLOSE = 'CLOSE_SHARED_ACCOUNT',
-}
-
 export interface ISharedAccountCommandBase extends ICommand {}
 
 export interface ICreateCommandPayload {
@@ -16,7 +9,7 @@ export interface ICreateCommandPayload {
 }
 
 export interface ICreateCommand extends ISharedAccountCommandBase {
-  name: SharedAccountCommandName.CREATE;
+  name: 'CREATE_SHARED_ACCOUNT';
   payload: ICreateCommandPayload;
 }
 
@@ -26,7 +19,7 @@ export interface IAddUserCommandPayload {
 }
 
 export interface IAddUserCommand extends ISharedAccountCommandBase {
-  name: SharedAccountCommandName.ADD_USER;
+  name: 'ADD_SHARED_ACCOUNT_USER';
   payload: IAddUserCommandPayload;
 }
 
@@ -36,7 +29,7 @@ export interface IAddExpendCommandPayload {
 }
 
 export interface IAddExpendCommand extends ISharedAccountCommandBase {
-  name: SharedAccountCommandName.ADD_EXPEND;
+  name: 'ADD_SHARED_ACCOUNT_EXPEND';
   payload: IAddExpendCommandPayload;
 }
 
@@ -46,7 +39,7 @@ export interface ICloseCommandPayload {
 }
 
 export interface ICloseCommand extends ISharedAccountCommandBase {
-  name: SharedAccountCommandName.CLOSE;
+  name: 'CLOSE_SHARED_ACCOUNT';
   payload: ICloseCommandPayload;
 }
 

@@ -1,10 +1,18 @@
-import { Controller, Post, Param, Body } from '@nestjs/common';
+import { Controller, Post, Param, Body, Inject } from '@nestjs/common';
 import { ICommand } from '../../../framework/commands';
+import { ICommandHandler } from 'framework/command-handlers';
 
 @Controller('commands')
 export class CommandsController {
-  @Post(':handler')
-  public async handle(@Param('handler') handler: string, @Body() body: ICommand) {
+  constructor(@Inject('CommandHandlers') private readonly handlers: Map<string, ICommandHandler<any>>) {}
 
+  @Post(':handler')
+  public async handle(@Param('handler') handlerName: string, @Body() body: ICommand) {
+    const handler: ICommandHandler<any> = this.handlers.get(handlerName);
+    if (!!handler) {
+      await handler.handle(body);
+    } else {
+      throw new Error(`Can not manage handler : ${ handlerName }`);
+    }
   }
 }

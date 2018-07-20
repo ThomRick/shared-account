@@ -3,7 +3,6 @@ import { IRepository } from '../../../framework/infrastructure';
 import { InMemoryRepository } from '../../../framework/infrastructure';
 import {
   SharedAccountCommand,
-  SharedAccountCommandName,
   ICreateCommandPayload,
   IAddUserCommandPayload,
   IAddExpendCommandPayload,
@@ -18,13 +17,13 @@ export class SharedAccountCommandHandler implements ICommandHandler<SharedAccoun
 
   public async handle(command: SharedAccountCommand): Promise<void> {
     switch (command.name) {
-      case SharedAccountCommandName.CREATE:
+      case 'CREATE_SHARED_ACCOUNT':
         await this.handleCreateCommand(command.payload);
         break;
-      case SharedAccountCommandName.ADD_USER:
+      case 'ADD_SHARED_ACCOUNT_USER':
         await this.handleAddUserCommand(command.payload);
         break;
-      case SharedAccountCommandName.ADD_EXPEND:
+      case 'ADD_SHARED_ACCOUNT_EXPEND':
         await this.handleAddExpendCommand(command.payload);
         break;
       default:
