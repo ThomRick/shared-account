@@ -4,7 +4,7 @@
   "description": "Event sourcing and CQRS implementation",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon src --exec 'ts-node src/main.ts'",
+    "start:dev": "nodemon --watch src --ext ts --exec 'ts-node src/main.ts'",
     "test": "jest --config jestconfig.json",
     "test:dev": "npm test -s -- --watchAll"
   },
