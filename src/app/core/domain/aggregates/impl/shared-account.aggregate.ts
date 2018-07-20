@@ -1,6 +1,6 @@
 import { AbstractAggregate } from '../../../../../framework/aggregates';
 import { IEventBase } from '../../../../../framework/events';
-import { ISharedAccountModel, SharedAccountModelImpl, IExpend } from '../../read-models';
+import { IExpend } from '../../read-models';
 import { ISharedAccountAggregate } from '../interfaces';
 import {
   SharedAccountEvent,
@@ -14,7 +14,10 @@ import { generateID } from '../../../../../framework/generators';
 
 export class SharedAccountAggregateImpl extends AbstractAggregate implements ISharedAccountAggregate {
   protected _id: string;
-  protected _model: ISharedAccountModel;
+  private _owner: string;
+  private _description: string;
+  private _users: string[];
+  private _expends: IExpend[];
 
   public create(description: string, owner: string): ISharedAccountAggregate {
     const event: SharedAccountEvent = new SharedAccountCreated(generateID(), owner, description);
@@ -48,16 +51,18 @@ export class SharedAccountAggregateImpl extends AbstractAggregate implements ISh
     switch (event.type) {
       case SharedAccountEventType.CREATED:
         this._id = event.accountID;
-        this._model = new SharedAccountModelImpl(event.accountID, event.owner, event.description);
+        this._owner = event.owner;
+        this._description = event.description;
+        this._users = [ event.owner ];
+        this._expends = [];
         break;
       case SharedAccountEventType.USER_ADDED:
-        this._model.addUser(event.userID);
+        this._users.push(event.userID);
         break;
       case SharedAccountEventType.EXPEND_ADDED:
-        this._model.addExpend(event.expend);
+        this._expends.push(event.expend);
         break;
       case SharedAccountEventType.CLOSED:
-        this._model = null;
         break;
       default:
         throw new Error(`Can no manage event : ${ event.type }`);
@@ -67,5 +72,21 @@ export class SharedAccountAggregateImpl extends AbstractAggregate implements ISh
 
   protected empty(): SharedAccountAggregateImpl {
     return new SharedAccountAggregateImpl();
+  }
+
+  public get owner(): string {
+    return this._owner;
+  }
+
+  public get description(): string {
+    return this._description;
+  }
+
+  public get users(): string[] {
+    return this._users;
+  }
+
+  public get expends(): IExpend[] {
+    return this._expends;
   }
 }

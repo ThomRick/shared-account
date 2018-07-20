@@ -4,7 +4,6 @@ import { IReadModel } from '../../read-model/interfaces/read-model-base.interfac
 
 export abstract class AbstractAggregate implements IAggregate {
   protected abstract _id: string;
-  protected abstract _model: IReadModel;
 
   public readonly uncommittedChanges: IEventBase[];
 
@@ -32,9 +31,5 @@ export abstract class AbstractAggregate implements IAggregate {
 
   public get id(): string {
     return this._id;
-  }
-
-  public get model(): IReadModel {
-    return this._model;
   }
 }
