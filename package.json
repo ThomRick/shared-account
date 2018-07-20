@@ -4,20 +4,35 @@
   "description": "Event sourcing and CQRS implementation",
   "main": "index.js",
   "scripts": {
+    "start:dev": "nodemon src --exec 'ts-node src/main.ts'",
     "test": "jest --config jestconfig.json",
     "test:dev": "npm test -s -- --watchAll"
   },
   "author": "ThomRick",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThomRick/shared-account.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ThomRick/shared-account/issues"
+  },
+  "homepage": "https://github.com/ThomRick/shared-account#readme",
   "devDependencies": {
     "@types/jest": "^23.1.6",
     "@types/node": "^10.5.2",
     "jest": "^23.4.1",
+    "nodemon": "^1.18.3",
     "ts-jest": "^23.0.0",
+    "ts-node": "^7.0.0",
     "tslint": "^5.10.0",
     "typescript": "^2.9.2"
   },
   "dependencies": {
+    "@nestjs/common": "^5.1.0",
+    "@nestjs/core": "^5.1.0",
+    "reflect-metadata": "^0.1.12",
+    "rxjs": "^6.2.2",
     "uuid": "^3.3.2"
   }
 }
