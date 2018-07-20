@@ -1,7 +1,6 @@
 import { SharedAccountAggregateImpl } from './shared-account.aggregate';
 import { SharedAccountCreated, SharedAccountUserAdded, SharedAccountExpendAdded, SharedAccountClosed } from '../../events';
-import { IExpend } from '../../read-models';
-import { AbstractAggregate } from '../../../../../framework/aggregates';
+import { Expend } from '../models';
 
 describe('Shared Account Aggregate', () => {
   it('should have a SharedAccountCreated event when create a new SharedAccount', () => {
@@ -39,7 +38,7 @@ describe('Shared Account Aggregate', () => {
     aggregate.create(description, owner);
     const newUser = 'newUser';
     aggregate.addUser(newUser);
-    const expend: IExpend = {
+    const expend: Expend = {
       owner,
       involvedUsers: [ owner, newUser ],
       amount: 100,

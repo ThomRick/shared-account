@@ -1,6 +1,5 @@
 import { AbstractAggregate } from '../../../../../framework/aggregates';
 import { IEventBase } from '../../../../../framework/events';
-import { IExpend } from '../../read-models';
 import { ISharedAccountAggregate } from '../interfaces';
 import {
   SharedAccountEvent,
@@ -11,13 +10,14 @@ import {
   SharedAccountClosed,
 } from '../../events';
 import { generateID } from '../../../../../framework/generators';
+import { Expend } from '../models';
 
 export class SharedAccountAggregateImpl extends AbstractAggregate implements ISharedAccountAggregate {
   protected _id: string;
   private _owner: string;
   private _description: string;
   private _users: string[];
-  private _expends: IExpend[];
+  private _expends: Expend[];
 
   public create(description: string, owner: string): ISharedAccountAggregate {
     const event: SharedAccountEvent = new SharedAccountCreated(generateID(), owner, description);
@@ -33,7 +33,7 @@ export class SharedAccountAggregateImpl extends AbstractAggregate implements ISh
     return this;
   }
 
-  public addExpend(expend: IExpend): ISharedAccountAggregate {
+  public addExpend(expend: Expend): ISharedAccountAggregate {
     const event: SharedAccountEvent = new SharedAccountExpendAdded(this._id, expend);
     this.apply(event);
     this.save(event);
@@ -86,7 +86,7 @@ export class SharedAccountAggregateImpl extends AbstractAggregate implements ISh
     return this._users;
   }
 
-  public get expends(): IExpend[] {
+  public get expends(): Expend[] {
     return this._expends;
   }
 }
