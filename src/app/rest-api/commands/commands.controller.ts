@@ -1,9 +1,10 @@
-import { Controller, Post, Param } from '@nestjs/common';
+import { Controller, Post, Param, Body } from '@nestjs/common';
+import { ICommand } from '../../../framework/commands';
 
 @Controller('commands')
 export class CommandsController {
-  @Post(':id')
-  public async handle(@Param('id') id: string) {
+  @Post(':handler')
+  public async handle(@Param('handler') handler: string, @Body() body: ICommand) {
 
   }
 }

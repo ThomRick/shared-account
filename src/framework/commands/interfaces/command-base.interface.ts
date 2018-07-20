@@ -1,4 +1,4 @@
-export interface ICommandBase {
+export interface ICommand {
   name: string;
   payload: any;
 }

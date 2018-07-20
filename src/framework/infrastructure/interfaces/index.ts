@@ -1,2 +1,2 @@
-export * from './repository-base.interface';
+export * from './repository.interface';
 export * from './document.interface';

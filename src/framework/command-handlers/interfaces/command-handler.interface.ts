@@ -1,5 +1,5 @@
-import { ICommandBase } from '../../commands';
+import { ICommand } from '../../commands';
 
-export interface ICommandHandler<T extends ICommandBase> {
+export interface ICommandHandler<T extends ICommand> {
   handle(command: T): Promise<void>;
 }

@@ -1,4 +1,4 @@
-import { ICommandBase } from 'framework/commands';
+import { ICommand } from 'framework/commands';
 
 export enum SharedAccountCommandName {
   CREATE = 'CREATE_SHARED_ACCOUNT',
@@ -7,7 +7,7 @@ export enum SharedAccountCommandName {
   CLOSE = 'CLOSE_SHARED_ACCOUNT',
 }
 
-export interface ISharedAccountCommandBase extends ICommandBase {}
+export interface ISharedAccountCommandBase extends ICommand {}
 
 export interface ICreateCommand extends ISharedAccountCommandBase {
   name: SharedAccountCommandName.CREATE;

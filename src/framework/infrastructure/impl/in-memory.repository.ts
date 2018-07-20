@@ -1,10 +1,10 @@
-import { IRepositoryBase, IDocumentBase } from '../interfaces';
+import { IRepository, IDocumentBase } from '../interfaces';
 import { IEventBase } from '../../events';
 import { DocumentImpl } from './document';
 
 const noop = () => {};
 
-export class InMemoryRepository implements IRepositoryBase {
+export class InMemoryRepository implements IRepository {
   constructor(
     private readonly collection: Map<string, IDocumentBase> = new Map<string, IDocumentBase>(),
   ) {}
