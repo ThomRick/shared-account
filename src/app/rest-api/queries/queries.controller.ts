@@ -1,10 +1,19 @@
-import { Controller, Get } from '@nestjs/common';
-import { IReadModel } from '../../../framework/read-model';
+import { Controller, Get, Param, Inject } from '@nestjs/common';
+import { IAggregate } from '../../../framework/aggregates';
+import { IQueryHandler } from 'framework/query-handlers';
 
 @Controller('queries')
 export class QueriesController {
-  @Get(':id')
-  public async handle(): Promise<IReadModel> {
-    return undefined;
+  constructor(@Inject('QueryHandlers') private readonly handlers: Map<string, IQueryHandler<IAggregate>>) {}
+
+  @Get(':name')
+  public async handleAll(@Param('name') name: string): Promise<IAggregate | IAggregate[]> {
+    return await this.handlers.get(name).handle();
   }
+
+  @Get(':name/:id')
+  public async handleById(@Param('name') name: string, @Param('id') id: string): Promise<IAggregate | IAggregate[]> {
+    return await this.handlers.get(name).handle(id);
+  }
+
 }
