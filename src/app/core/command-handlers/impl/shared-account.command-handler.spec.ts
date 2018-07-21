@@ -1,9 +1,9 @@
-import { ICommandHandler } from '../../../framework/command-handlers';
-import { SharedAccountCommand } from '../domain/commands';
+import { ICommandHandler } from '../../../../framework/command-handlers';
+import { SharedAccountCommand } from '../../domain/commands';
 import { SharedAccountCommandHandler } from './shared-account.command-handler';
-import { IRepository, InMemoryRepository } from '../../../framework/infrastructure';
-import { IDocument } from '../../../framework/infrastructure/interfaces';
-import { SharedAccountAggregate } from '../domain/aggregates/impl';
+import { IRepository, InMemoryRepository } from '../../../../framework/infrastructure';
+import { IDocument } from '../../../../framework/infrastructure/interfaces';
+import { SharedAccountAggregate } from '../../domain/aggregates/impl';
 
 describe('Shared Account Command Handler', () => {
   let collection: Map<string, IDocument>;

@@ -1,14 +1,10 @@
 import { Provider } from '@nestjs/common';
-import { InMemoryRepository, IRepository } from '../../framework/infrastructure';
-import { SharedAccountAggregate } from './domain/aggregates/impl';
-import { ICommandHandler } from '../../framework/command-handlers';
-import { SharedAccountCommandHandler } from './command-handlers/shared-account.command-handler';
+import { IRepository } from '../../../framework/infrastructure';
+import { SharedAccountAggregate } from '../domain/aggregates';
+import { SharedAccountCommandHandler } from './impl';
+import { ICommandHandler } from '../../../framework/command-handlers';
 
 export const providers: Provider[] = [
-  {
-    provide: 'SharedAccountRepository',
-    useFactory: () => new InMemoryRepository<SharedAccountAggregate>(),
-  },
   {
     provide: 'SharedAccountCommandHandler',
     useFactory: (repository: IRepository<SharedAccountAggregate>) => new SharedAccountCommandHandler(repository),
@@ -29,9 +25,5 @@ export const providers: Provider[] = [
       return commandHandlers;
     },
     inject: [ 'SharedAccountCommandHandler' ],
-  },
-  {
-    provide: 'QueryHandlers',
-    useFactory: () => undefined,
   },
 ];

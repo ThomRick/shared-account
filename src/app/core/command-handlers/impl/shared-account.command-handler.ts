@@ -1,14 +1,14 @@
-import { ICommandHandler } from '../../../framework/command-handlers';
-import { IRepository } from '../../../framework/infrastructure';
-import { InMemoryRepository } from '../../../framework/infrastructure';
+import { ICommandHandler } from '../../../../framework/command-handlers';
+import { IRepository } from '../../../../framework/infrastructure';
+import { InMemoryRepository } from '../../../../framework/infrastructure';
 import {
   SharedAccountCommand,
   ICreateCommandPayload,
   IAddUserCommandPayload,
   IAddExpendCommandPayload,
-} from '../domain/commands';
-import { SharedAccountAggregate } from '../domain/aggregates/impl';
-import { IEventBase } from 'framework/events';
+} from '../../domain/commands';
+import { SharedAccountAggregate } from '../../domain/aggregates/impl';
+import { IEventBase } from '../../../../framework/events';
 
 export class SharedAccountCommandHandler implements ICommandHandler<SharedAccountCommand> {
   constructor(

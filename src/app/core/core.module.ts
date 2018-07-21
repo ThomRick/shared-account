@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { providers } from './core.providers';
+import { CommandHandlersModule } from './command-handlers/command-handlers.module';
 
 @Module({
-  providers: [
-    ...providers,
+  imports: [
+    CommandHandlersModule,
   ],
   exports: [
-    'CommandHandlers',
+    CommandHandlersModule,
   ],
 })
 export class CoreModule {}
