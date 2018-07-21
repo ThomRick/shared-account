@@ -14,7 +14,14 @@ export class MongoRepository<T extends IAggregate> implements IRepository<T> {
     const document: IDocument = await this.collection.findOne({ _id: key });
     if (!!document) {
       events.forEach((event) => document.events.push(event));
-      await this.collection.updateOne({ id: key }, document);
+      await this.collection.updateOne(
+        { _id: key },
+        {
+          $set: {
+            events: document.events,
+          },
+        },
+      );
     } else {
       await this.collection.insertOne({
         _id: key,
