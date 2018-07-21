@@ -20,6 +20,7 @@
   "homepage": "https://github.com/ThomRick/shared-account#readme",
   "devDependencies": {
     "@types/jest": "^23.1.6",
+    "@types/mongoose": "^5.2.1",
     "@types/node": "^10.5.2",
     "jest": "^23.4.1",
     "nodemon": "^1.18.3",
@@ -31,6 +32,7 @@
   "dependencies": {
     "@nestjs/common": "^5.1.0",
     "@nestjs/core": "^5.1.0",
+    "mongoose": "^5.2.4",
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.2.2",
     "uuid": "^3.3.2"
