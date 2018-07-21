@@ -13,11 +13,11 @@ export class SharedAccountsController {
 
   @Get()
   public async findAll(): Promise<any> {
-    return undefined;
+    return this.service.findAll();
   }
 
   @Get(':id')
   public async findById(@Param('id') id: string): Promise<any> {
-    return undefined;
+    return this.service.findById(id);
   }
 }

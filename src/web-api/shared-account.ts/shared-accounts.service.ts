@@ -18,12 +18,16 @@ export class SharedAccountsService {
     return this.map(response.data[ 0 ]);
   }
 
-  public async findAll(): Promise<any> {
-    return undefined;
+  public async findAll(): Promise<ISharedAccountModel[]> {
+    const response: AxiosResponse<any> = await this.http.get('http://localhost:8081/queries/shared-account')
+      .toPromise();
+    return response.data.map((account) => this.map(account));
   }
 
-  public async findById(): Promise<any> {
-    return undefined;
+  public async findById(id: string): Promise<ISharedAccountModel> {
+    const response: AxiosResponse<any> = await this.http.get(`http://localhost:8081/queries/shared-account/${ id }`)
+      .toPromise();
+    return this.map(response.data);
   }
 
   private map(aggregate: any): ISharedAccountModel {

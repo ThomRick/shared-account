@@ -11,7 +11,7 @@ export class MongoRepository<T extends IAggregate> implements IRepository<T> {
   ) {}
 
   public async insert(key: string, events: IEventBase[]): Promise<void> {
-    const document: IDocument = await this.collection.findOne({ id: key });
+    const document: IDocument = await this.collection.findOne({ _id: key });
     if (!!document) {
       events.forEach((event) => document.events.push(event));
       await this.collection.updateOne({ id: key }, document);
@@ -33,7 +33,7 @@ export class MongoRepository<T extends IAggregate> implements IRepository<T> {
       process = arg1;
     }
     if (!!key) {
-      return process((await this.collection.findOne({ id: key })).events);
+      return process((await this.collection.findOne({ _id: key })).events);
     } else {
       return (await this.collection.find().toArray())
         .map((document: IDocument) => process(document.events));
