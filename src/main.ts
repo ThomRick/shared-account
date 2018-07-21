@@ -1,6 +1,7 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app/app.module';
+import { startApiServer } from './app/main';
+import { startWebServer } from './web-api/main';
+
 (async () => {
-  const application = await NestFactory.create(AppModule);
-  await application.listen(process.env.PORT || 8080);
+  await startApiServer();
+  await startWebServer();
 })();
