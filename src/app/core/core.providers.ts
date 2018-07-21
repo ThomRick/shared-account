@@ -30,4 +30,8 @@ export const providers: Provider[] = [
     },
     inject: [ 'SharedAccountCommandHandler' ],
   },
+  {
+    provide: 'QueryHandlers',
+    useFactory: () => undefined,
+  },
 ];
